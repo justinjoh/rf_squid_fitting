@@ -78,6 +78,59 @@ if __name__ == '__main__' and sys.argv[1] == "linspace":
     plt.legend()
     plt.show()
 
+
+def simple_plot_frequency(Lgeo, Cgeo, Ic, f1, f2, freq1, freq2):
+    """plot a single graph"""
+    
+    fDC_list = np.linspace(f1, f2, 1000)
+    resonant_frequency_list = get_simple_frequencies(fDC_list, Lgeo, Cgeo, Ic)
+    plt.plot(fDC_list, resonant_frequency_list, 'g-')
+    plt.xlabel("applied DC flux"); plt.ylabel("resonant frequency")
+
+    plt.legend()
+    plt.show()
+
+
+def simple_plot_frequency_on_image(image, Lgeo, Cgeo, Ic, f1, f2, freq1,
+freq2):
+    """plot a single graph on an image"""
+    Lgeo = float(Lgeo)
+    Cgeo = float(Cgeo)
+    Ic = float(Ic)
+    f1 = float(f1)
+    f2 = float(f2)
+    freq1 = float(freq1)
+    freq2 = float(freq2)    # just making sure nothing got messed up
+    image_shape = np.shape(image)
+    fDC_list = np.linspace(f1, f2, 1000)
+    resonant_frequency_list = get_simple_frequencies(fDC_list, Lgeo, Cgeo, Ic)
+    
+    plotting_fDC_list = np.linspace(0, image_shape[1], 1000)
+    
+    oldmax = np.max(resonant_frequency_list)
+    oldmin = np.min(resonant_frequency_list)
+    print('oldmax ', oldmax)
+    print('oldmin ', oldmin)
+    print('freq1 ', freq1)
+    print('freq2 ', freq2)
+    print('rows ', image_shape[0])
+    plotting_resonant_frequency_list=(-1.0)*(resonant_frequency_list-oldmin)/(oldmax-oldmin)*float(image_shape[0])*((oldmax-oldmin)/(freq2-freq1))+(freq2-oldmin)/(freq2-freq1)*float(image_shape[0])
+    print(float(image_shape[0]))
+    implot = plt.imshow(image)
+    
+    # need to scale fDC_list and resonant_frequency_list to the dimensions of
+    # the image
+    
+    plt.plot(plotting_fDC_list, plotting_resonant_frequency_list , 'g-')
+
+    #plt.xlim(xmin=0)
+    # plt.ylim(ymax=0)
+    
+    plt.legend()
+    plt.show()
+    plt.imshow(image)
+    plt.show()
+
 if __name__ == '__main__' and sys.argv[1] == "list":
     """
     For running with specific set of values
@@ -107,17 +160,6 @@ if __name__ == '__main__' and sys.argv[1] == "list":
     plt.legend()
     plt.show()
 
-    '''
-    fDC_list = np.linspace(0, 20, 1000)
-    to_plot = test_inverse_stuff(fDC_list)
-    plt.plot(fDC_list, to_plot)
-    to_plot2 = test_inverse_stuff2(fDC_list)
-    plt.plot(fDC_list, to_plot2)
-    plt.plot(fDC_list, fDC_list)
-    plt.ylim((0, 20))
-    plt.xlim((0, 20))
-    plt.show()
-    '''
 
     if __name__ == '__main__' and sys.argv[1] == "import":
         """
@@ -135,9 +177,6 @@ if __name__ == '__main__' and sys.argv[1] == "list":
         pass
 
 
-
-
-
 if __name__ == '__main__' and len(sys.argv) == 1:
     # ---
     fDC_start = -.7  # start number of flux quanta
@@ -148,8 +187,6 @@ if __name__ == '__main__' and len(sys.argv) == 1:
     Cgeo = .42*1e-12
     Ic = .55*1e-6
     # ---
-
-#    for Lgeo in [10*1e-12, 15*1e-12]:
 
     fDC_list = np.linspace(fDC_start, fDC_stop, fDC_numsteps)  # i.e. x-axis values
     resonant_frequency_list = get_simple_frequencies(fDC_list, Lgeo, Cgeo, Ic)
@@ -163,16 +200,4 @@ if __name__ == '__main__' and len(sys.argv) == 1:
     plt.plot(fDC_list, np.ones((len(fDC_list), 1))*10e9)
     plt.legend()
     plt.show()
-
-    '''
-    fDC_list = np.linspace(0, 20, 1000)
-    to_plot = test_inverse_stuff(fDC_list)
-    plt.plot(fDC_list, to_plot)
-    to_plot2 = test_inverse_stuff2(fDC_list)
-    plt.plot(fDC_list, to_plot2)
-    plt.plot(fDC_list, fDC_list)
-    plt.ylim((0, 20))
-    plt.xlim((0, 20))
-    plt.show()
-    '''
 
