@@ -6,9 +6,9 @@ from fit_skeleton import *
 from skeletonize_image import *
 from plot_simple_frequency import *
 
-Lgeo_numpoints = 10
-Cgeo_numpoints = 10
-Ic_numpoints = 10
+Lgeo_numpoints = 7
+Cgeo_numpoints = 7
+Ic_numpoints = 7
 Lgeo_range = np.linspace(4*1e-12, 6*1e-12, Lgeo_numpoints)
 Cgeo_range = np.linspace(50*1e-12, 65*1e-12, Cgeo_numpoints)
 Ic_range = np.linspace(20*1e-6, 50*1e-6, Ic_numpoints)
@@ -48,3 +48,6 @@ if __name__ == "__main__" and (len(sys.argv)==2):
     print("C ", float(C))
     print("I ", float(I))
     simple_plot_frequency_on_image(skeleton, L, C, I, x1, x2, y1, y2) 
+    simple_plot_frequency(L, C, I, x1, x2, y1, y2)
+    simple_plot_frequency(19.0/2.0*1e-12, 30.0*1e-12, 23.0*1e-6, x1, x2, y1,
+    y2)
